@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+      <span>My Angular 17 App</span>
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/products">Products</button>
+        <button mat-menu-item routerLink="/categories">Categories</button>
+      </mat-menu>
+    </mat-toolbar>
+
+<router-outlet />
