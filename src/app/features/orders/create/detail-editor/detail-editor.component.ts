@@ -86,11 +86,15 @@ export class DetailEditorComponent implements OnInit {
         unitPrice: formValue.unitPrice,
         product: this.products.find((p) => p.id === formValue.productId),
       };
-      this.addDetail.emit(orderDetail); // Emit only the required fields
+      this.addDetail.emit(orderDetail);
       this.detailForm.reset({
-        productId: '',
-        quantity: 1,
-      });
+                productId: '',
+                quantity: 1,
+              });
+      if (this.data?.item) {
+        // Edit mode: close dialog after update
+        this.dialogRef.close();
+      } 
     }
   }
 

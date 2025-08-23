@@ -1,25 +1,33 @@
-<h2>{{ isEditMode ? 'Update Order' : 'Create New Order' }}</h2>
-<form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="fill">
-    <mat-label>Customer Name</mat-label>
-    <input matInput formControlName="customerName" />
-  </mat-form-field>
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Update Order' : 'Create New Order' }}</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Customer Name</mat-label>
+        <input matInput formControlName="customerName" />
+        <mat-error *ngIf="orderForm.get('customerName')?.hasError('required')">
+          Customer name is required
+        </mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Order Date</mat-label>
-    <input matInput type="date" formControlName="orderDate" readonly />
-  </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Order Date</mat-label>
+        <input matInput type="date" formControlName="orderDate" readonly />
+      </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Total Amount</mat-label>
-    <input matInput type="number" formControlName="totalAmount" readonly />
-  </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Total Amount</mat-label>
+        <input matInput type="number" formControlName="totalAmount" readonly />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
 
-  <!-- Order Details Section as Angular Material Table -->
-  <div>
-    <h3>Order Items</h3>
-      <button mat-raised-button color="accent" type="button" (click)="openDetailDialog()">
-        Add Order Item
+<mat-card style="margin-top: 24px;">
+  <mat-card-title>Order Items</mat-card-title>
+  <mat-card-content>
+    <button mat-raised-button color="accent" type="button" (click)="openDetailDialog()" style="margin-bottom: 12px;">
+      Add Order Item
     </button>
     <table mat-table [dataSource]="orderDetails" class="mat-elevation-z8" style="width: 100%;">
       <!-- Product Column -->
@@ -50,7 +58,12 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let item">
-          <button mat-button color="warn" type="button" (click)="removeItem(item)">Remove</button>
+          <button mat-icon-button color="primary" type="button" (click)="openDetailDialog(item)" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" (click)="removeItem(item)" aria-label="Remove">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -62,11 +75,14 @@
         No order items added.
       </div>
     </ng-container>
-  </div>
+  </mat-card-content>
+</mat-card>
 
-  <!-- Move the submit button OUTSIDE the div above -->
-  <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid" style="margin-top: 24px;">
+<div style="margin-top: 24px;">
+  <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid">
     {{ isEditMode ? 'Update Order' : 'Create Order' }}
   </button>
-
-</form>
+  <button mat-raised-button color="warn" type="button" (click)="onCancel()">
+    Cancel
+  </button>
+</div>

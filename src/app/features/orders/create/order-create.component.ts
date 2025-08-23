@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailEditorComponent } from './detail-editor/detail-editor.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-order-create',
@@ -27,7 +30,9 @@ import { Router, ActivatedRoute } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-  ],
+    MatCardModule,
+    MatIcon
+],
   templateUrl: './order-create.component.html',
   styleUrl: './order-create.component.css',
 })
@@ -47,7 +52,8 @@ export class OrderCreateComponent implements OnInit {
     private orderService: OrderService,
     private dialog: MatDialog,
     private router: Router, // <-- Add this
-    private route: ActivatedRoute // <-- Add this
+    private route: ActivatedRoute, // <-- Add this
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -56,15 +62,17 @@ export class OrderCreateComponent implements OnInit {
       if (orderId) {
         console.log('Edit mode for order ID:', orderId);
         this.isEditMode = true; // <-- Set edit mode
-        this.orderService.apiOrderIdGet$Json({ id: orderId }).subscribe((order) => {
-          console.log('Fetched order:', order);
-          this.orderForm.patchValue({
-            customerName: order.customerName,
-            orderDate: order.orderDate,
-            totalAmount: order.totalAmount,
+        this.orderService
+          .apiOrderIdGet$Json({ id: orderId })
+          .subscribe((order) => {
+            console.log('Fetched order:', order);
+            this.orderForm.patchValue({
+              customerName: order.customerName,
+              orderDate: order.orderDate,
+              totalAmount: order.totalAmount,
+            });
+            this.orderDetails = [...(order.orderDetails || [])];
           });
-          this.orderDetails = [...(order.orderDetails || [])];
-        });
       }
     });
   }
@@ -131,43 +139,49 @@ export class OrderCreateComponent implements OnInit {
     });
   }
 
-  openDetailDialog() {
+  openDetailDialog(item?: OrderDetailDto) {
     const dialogRef = this.dialog.open(DetailEditorComponent, {
       width: '400px',
+      data: { item },
     });
 
     dialogRef.componentInstance.addDetail.subscribe(
-      (detail: CreateOrderDetailDto) => {
+      (detail: CreateOrderDetailDto & { unitPrice?: number }) => {
         const existing = this.orderDetails.find(
           (d) => d.productId === detail.productId
         );
-        if (existing) {
+        if (existing && !item) {
+          // Add logic as before for adding
+        } else if (item) {
+          // Update logic for modifying
           this.orderDetails = this.orderDetails.map((d) =>
-            d.productId === detail.productId
-              ? {
-                  ...d,
-                  quantity: d.quantity + detail.quantity,
-                  amount: (d.quantity + detail.quantity) * (d as any).unitPrice,
-                }
-              : d
+            d.productId === item.productId ? { ...d, ...detail } : d
           );
         } else {
-          (detail as any).amount = detail.quantity * (detail as any).unitPrice;
+          // Add new
+          (detail as any).amount = detail.quantity * (detail.unitPrice ?? 0);
           this.orderDetails = [...this.orderDetails, detail];
         }
-        // Optionally update totalAmount here
-        this.orderForm.patchValue({
-          totalAmount: this.orderDetails.reduce(
-            (sum, d) =>
-              sum + ((d as any).amount ?? d.quantity * (d as any).unitPrice),
-            0
-          ),
-        });
+        this.updateTotalAmount();
       }
     );
 
     dialogRef.afterClosed().subscribe(() => {
       // Dialog closed, do any cleanup if needed
     });
+  }
+  onCancel() {
+    this.router.navigate(['/orders']);
+  }
+
+  private updateTotalAmount() {
+    this.orderForm.patchValue({
+      totalAmount: this.orderDetails.reduce(
+        (sum, d) =>
+          sum + Number(d.quantity || 0) * Number((d as any).unitPrice || 0),
+        0
+      ),
+    });
+    this.cdr.markForCheck();
   }
 }
