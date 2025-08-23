@@ -11,25 +11,40 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [CommonModule,     MatTableModule,
-      MatProgressSpinnerModule,
-      MatButtonModule,
-      MatIconModule,
-      RouterModule
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterModule,
   ],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.css',
 })
 export class OrdersListComponent implements OnInit {
   orders: OrderDto[] = [];
-  columns: string[] = ['id', 'customer', 'date', 'total'];
+  columns: string[] = ['actions', 'id', 'customer', 'date', 'total'];
+  expandedOrder: OrderDto | null = null;
 
   constructor(private ordersService: OrderService) {}
 
   ngOnInit(): void {
-    this.ordersService. apiOrderGet$Json().subscribe({
+    this.ordersService.apiOrderGet$Json().subscribe({
       next: (data) => (this.orders = data),
       error: (err) => console.error('Failed to load orders', err),
     });
+  }
+
+  deleteOrder(order: OrderDto) {
+    if (confirm('Are you sure you want to delete this order?')) {
+      if (order.orderId !== undefined) {
+        this.ordersService.apiOrderIdDelete({ id: order.orderId }).subscribe(() => {
+          this.orders = this.orders.filter((o) => o.orderId !== order.orderId);
+        });
+      } else {
+        console.error('Order ID is undefined. Cannot delete order.');
+      }
+    }
   }
 }

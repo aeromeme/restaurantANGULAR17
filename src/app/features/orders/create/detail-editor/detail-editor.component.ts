@@ -17,8 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../../products/service/ProductsService'; // Adjust path as needed
-import { ProductDto } from '../../../../api/models';
+import { OrderDetailDto, ProductDto } from '../../../../api/models';
 import { MatSelectModule } from '@angular/material/select';
+import { CreateOrderDetailDto } from '../../../../api/models/create-order-detail-dto'; // Adjust path if needed
 // Update the path below to the correct location of ProductDto
 // TODO: Adjust the path below if ProductDto is located elsewhere
 
@@ -78,9 +79,16 @@ export class DetailEditorComponent implements OnInit {
 
   addAndReset() {
     if (this.detailForm.valid) {
-      this.addDetail.emit(this.detailForm.value); // Emit to parent
+      const formValue = this.detailForm.value;
+      const orderDetail: OrderDetailDto = {
+        productId: formValue.productId,
+        quantity: formValue.quantity,
+        unitPrice: formValue.unitPrice,
+        product: this.products.find((p) => p.id === formValue.productId),
+      };
+      this.addDetail.emit(orderDetail); // Emit only the required fields
       this.detailForm.reset({
-        productName: '',
+        productId: '',
         quantity: 1,
       });
     }

@@ -1,4 +1,4 @@
-<h2>Create New Order</h2>
+<h2>{{ isEditMode ? 'Update Order' : 'Create New Order' }}</h2>
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill">
     <mat-label>Customer Name</mat-label>
@@ -66,7 +66,7 @@
 
   <!-- Move the submit button OUTSIDE the div above -->
   <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid" style="margin-top: 24px;">
-    Create Order
+    {{ isEditMode ? 'Update Order' : 'Create Order' }}
   </button>
 
 </form>
