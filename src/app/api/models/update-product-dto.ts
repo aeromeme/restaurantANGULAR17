@@ -5,7 +5,6 @@
 export interface UpdateProductDto {
   categoryId?: number;
   id?: number;
-  name?: string | null;
-  price?: number;
-  stock?: number;
+  name: string;
+  price: number;
 }

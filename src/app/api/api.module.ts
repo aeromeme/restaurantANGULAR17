@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { CategoryService } from './services/category.service';
+import { OrderService } from './services/order.service';
 import { ProductsService } from './services/products.service';
 
 /**
@@ -18,6 +19,7 @@ import { ProductsService } from './services/products.service';
   declarations: [],
   providers: [
     CategoryService,
+    OrderService,
     ProductsService,
     ApiConfiguration
   ],

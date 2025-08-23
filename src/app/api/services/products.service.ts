@@ -11,6 +11,10 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiProductsCategoryCategoryIdGet$Json } from '../fn/products/api-products-category-category-id-get-json';
+import { ApiProductsCategoryCategoryIdGet$Json$Params } from '../fn/products/api-products-category-category-id-get-json';
+import { apiProductsCategoryCategoryIdGet$Plain } from '../fn/products/api-products-category-category-id-get-plain';
+import { ApiProductsCategoryCategoryIdGet$Plain$Params } from '../fn/products/api-products-category-category-id-get-plain';
 import { apiProductsGet$Json } from '../fn/products/api-products-get-json';
 import { ApiProductsGet$Json$Params } from '../fn/products/api-products-get-json';
 import { apiProductsGet$Plain } from '../fn/products/api-products-get-plain';
@@ -223,6 +227,53 @@ export class ProductsService extends BaseService {
   apiProductsIdDelete(params: ApiProductsIdDelete$Params, context?: HttpContext): Observable<void> {
     return this.apiProductsIdDelete$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `apiProductsCategoryCategoryIdGet()` */
+  static readonly ApiProductsCategoryCategoryIdGetPath = '/api/Products/category/{categoryId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiProductsCategoryCategoryIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiProductsCategoryCategoryIdGet$Plain$Response(params: ApiProductsCategoryCategoryIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProductDto>>> {
+    return apiProductsCategoryCategoryIdGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiProductsCategoryCategoryIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiProductsCategoryCategoryIdGet$Plain(params: ApiProductsCategoryCategoryIdGet$Plain$Params, context?: HttpContext): Observable<Array<ProductDto>> {
+    return this.apiProductsCategoryCategoryIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProductDto>>): Array<ProductDto> => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiProductsCategoryCategoryIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiProductsCategoryCategoryIdGet$Json$Response(params: ApiProductsCategoryCategoryIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProductDto>>> {
+    return apiProductsCategoryCategoryIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiProductsCategoryCategoryIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiProductsCategoryCategoryIdGet$Json(params: ApiProductsCategoryCategoryIdGet$Json$Params, context?: HttpContext): Observable<Array<ProductDto>> {
+    return this.apiProductsCategoryCategoryIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProductDto>>): Array<ProductDto> => r.body)
     );
   }
 
