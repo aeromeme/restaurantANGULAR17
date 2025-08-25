@@ -4,9 +4,11 @@
     <mat-form-field appearance="fill">
       <mat-label>Product</mat-label>
       <mat-select formControlName="productId">
-        <mat-option *ngFor="let product of products" [value]="product.id">
-          {{ product.name }}
-        </mat-option>
+        @for (product of products; track product.id) {
+          <mat-option [value]="product.id">
+            {{ product.name }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill">

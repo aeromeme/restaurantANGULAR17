@@ -46,8 +46,9 @@
 
   <!-- Detail Row (unchanged) -->
   <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let order" [attr.colspan]="columns.length">
-      <div *ngIf="expandedOrder === order">
+  <td mat-cell *matCellDef="let order" [attr.colspan]="columns.length">
+    @if (expandedOrder === order) {
+      <div>
         <h4>Order Details</h4>
         <table mat-table [dataSource]="order.orderDetails || []" class="mat-elevation-z1" style="width: 100%; margin-bottom: 8px;">
           <ng-container matColumnDef="product">
@@ -64,12 +65,15 @@
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="['product', 'quantity', 'amount']"></tr>
           <tr mat-row *matRowDef="let row; columns: ['product', 'quantity', 'amount']"></tr>
-          <tr *ngIf="!(order.orderDetails?.length)">
-            <td colspan="3" style="text-align:center; color:#888;">No details available.</td>
-          </tr>
+          @if (!(order.orderDetails?.length)) {
+            <tr>
+              <td colspan="3" style="text-align:center; color:#888;">No details available.</td>
+            </tr>
+          }
         </table>
       </div>
-    </td>
+    }
+  </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columns"></tr>

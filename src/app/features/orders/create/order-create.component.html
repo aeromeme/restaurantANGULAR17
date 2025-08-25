@@ -5,9 +5,11 @@
       <mat-form-field appearance="fill">
         <mat-label>Customer Name</mat-label>
         <input matInput formControlName="customerName" />
-        <mat-error *ngIf="orderForm.get('customerName')?.hasError('required')">
-          Customer name is required
-        </mat-error>
+        @if (orderForm.get('customerName')?.hasError('required')) {
+          <mat-error>
+            Customer name is required
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -70,11 +72,11 @@
       <tr mat-header-row *matHeaderRowDef="['product', 'quantity', 'unitPrice', 'amount', 'actions']"></tr>
       <tr mat-row *matRowDef="let row; columns: ['product', 'quantity', 'unitPrice', 'amount', 'actions']"></tr>
     </table>
-    <ng-container *ngIf="!orderDetails || orderDetails.length === 0">
+    @if (!orderDetails || orderDetails.length === 0) {
       <div style="text-align: center; padding: 16px; color: #888;">
         No order items added.
       </div>
-    </ng-container>
+    }
   </mat-card-content>
 </mat-card>
 
