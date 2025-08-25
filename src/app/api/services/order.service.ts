@@ -21,8 +21,10 @@ import { apiOrderIdGet$Json } from '../fn/order/api-order-id-get-json';
 import { ApiOrderIdGet$Json$Params } from '../fn/order/api-order-id-get-json';
 import { apiOrderIdGet$Plain } from '../fn/order/api-order-id-get-plain';
 import { ApiOrderIdGet$Plain$Params } from '../fn/order/api-order-id-get-plain';
-import { apiOrderIdPut } from '../fn/order/api-order-id-put';
-import { ApiOrderIdPut$Params } from '../fn/order/api-order-id-put';
+import { apiOrderIdPut$Json } from '../fn/order/api-order-id-put-json';
+import { ApiOrderIdPut$Json$Params } from '../fn/order/api-order-id-put-json';
+import { apiOrderIdPut$Plain } from '../fn/order/api-order-id-put-plain';
+import { ApiOrderIdPut$Plain$Params } from '../fn/order/api-order-id-put-plain';
 import { apiOrderPost$Json } from '../fn/order/api-order-post-json';
 import { ApiOrderPost$Json$Params } from '../fn/order/api-order-post-json';
 import { apiOrderPost$Plain } from '../fn/order/api-order-post-plain';
@@ -181,23 +183,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderIdPut()` instead.
+   * To access only the response body, use `apiOrderIdPut$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiOrderIdPut$Response(params: ApiOrderIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderIdPut(this.http, this.rootUrl, params, context);
+  apiOrderIdPut$Plain$Response(params: ApiOrderIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderDto>> {
+    return apiOrderIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderIdPut$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderIdPut$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiOrderIdPut(params: ApiOrderIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderIdPut$Plain(params: ApiOrderIdPut$Plain$Params, context?: HttpContext): Observable<OrderDto> {
+    return this.apiOrderIdPut$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderDto>): OrderDto => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderIdPut$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiOrderIdPut$Json$Response(params: ApiOrderIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderDto>> {
+    return apiOrderIdPut$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderIdPut$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiOrderIdPut$Json(params: ApiOrderIdPut$Json$Params, context?: HttpContext): Observable<OrderDto> {
+    return this.apiOrderIdPut$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderDto>): OrderDto => r.body)
     );
   }
 

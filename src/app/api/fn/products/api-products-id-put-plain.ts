@@ -8,28 +8,29 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { OrderDto } from '../../models/order-dto';
+import { ProductDto } from '../../models/product-dto';
+import { UpdateProductDto } from '../../models/update-product-dto';
 
-export interface ApiOrderIdPut$Params {
+export interface ApiProductsIdPut$Plain$Params {
   id: number;
-      body?: OrderDto
+      body?: UpdateProductDto
 }
 
-export function apiOrderIdPut(http: HttpClient, rootUrl: string, params: ApiOrderIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, apiOrderIdPut.PATH, 'put');
+export function apiProductsIdPut$Plain(http: HttpClient, rootUrl: string, params: ApiProductsIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductDto>> {
+  const rb = new RequestBuilder(rootUrl, apiProductsIdPut$Plain.PATH, 'put');
   if (params) {
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'text', accept: 'text/plain', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<ProductDto>;
     })
   );
 }
 
-apiOrderIdPut.PATH = '/api/Order/{id}';
+apiProductsIdPut$Plain.PATH = '/api/Products/{id}';

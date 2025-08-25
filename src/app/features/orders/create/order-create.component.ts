@@ -18,7 +18,7 @@ import { DetailEditorComponent } from './detail-editor/detail-editor.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIcon } from "@angular/material/icon";
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-order-create',
@@ -31,8 +31,8 @@ import { MatIcon } from "@angular/material/icon";
     MatButtonModule,
     MatTableModule,
     MatCardModule,
-    MatIcon
-],
+    MatIcon,
+  ],
   templateUrl: './order-create.component.html',
   styleUrl: './order-create.component.css',
 })
@@ -78,9 +78,12 @@ export class OrderCreateComponent implements OnInit {
   }
 
   onSubmit() {
+    const formValue = this.orderForm.value;
+    console.log('Form Value:', formValue);
+    console.log('Edit Mode:', this.isEditMode);
     if (this.orderForm.valid) {
-      const formValue = this.orderForm.value;
-
+      console.log('Form Value:', formValue);
+      console.log('Edit Mode:', this.isEditMode);
       if (this.isEditMode) {
         const orderIdParam = this.route.snapshot.queryParamMap.get('id');
         const UpdateOrderDto: OrderDto = {
@@ -90,11 +93,13 @@ export class OrderCreateComponent implements OnInit {
           orderDetails: this.orderDetails.length ? this.orderDetails : null,
         };
         // Get the order ID from query params
-
+       
         const orderId = orderIdParam !== null ? Number(orderIdParam) : null;
+         console.log('Updating order:', UpdateOrderDto);
+        console.log('Order ID:', orderId);
         if (orderId !== null && !isNaN(orderId)) {
           this.orderService
-            .apiOrderIdPut({ id: orderId, body: UpdateOrderDto })
+            .apiOrderIdPut$Json({ id: orderId, body: UpdateOrderDto })
             .subscribe({
               next: () => {
                 this.router.navigate(['/orders']);
@@ -127,16 +132,10 @@ export class OrderCreateComponent implements OnInit {
   }
   removeItem(item: OrderDetailDto) {
     this.orderDetails = this.orderDetails.filter(
-      (d) => d.productId !== item.productId
+      (d) => d.orderDetailId !== item.orderDetailId
     );
     // Update totalAmount after removal
-    this.orderForm.patchValue({
-      totalAmount: this.orderDetails.reduce(
-        (sum, d) =>
-          sum + ((d as any).amount ?? d.quantity * (d as any).unitPrice),
-        0
-      ),
-    });
+    this.updateTotalAmount();
   }
 
   openDetailDialog(item?: OrderDetailDto) {
@@ -150,15 +149,68 @@ export class OrderCreateComponent implements OnInit {
         const existing = this.orderDetails.find(
           (d) => d.productId === detail.productId
         );
-        if (existing && !item) {
-          // Add logic as before for adding
-        } else if (item) {
-          // Update logic for modifying
+        if (item) {
+          // Edit mode: check if productId has changed
+          if (item.productId !== detail.productId) {
+            const existing = this.orderDetails.find(
+              (d) => d.productId === detail.productId
+            );
+            if (existing) {
+              // Product changed and new product already exists: sum quantities and update amount, remove original item
+              this.orderDetails = this.orderDetails
+                .filter((d) => d.productId !== item.productId) // remove the original item
+                .map((d) =>
+                  d.productId === detail.productId
+                    ? {
+                        ...d,
+                        quantity: d.quantity + detail.quantity,
+                        amount:
+                          (d.quantity + detail.quantity) *
+                          (detail.unitPrice ?? (d as any).unitPrice ?? 0),
+                        unitPrice: detail.unitPrice ?? (d as any).unitPrice,
+                      }
+                    : d
+                );
+            } else {
+              // Product changed and new product does not exist: update the item
+              this.orderDetails = this.orderDetails.map((d) =>
+                d.productId === item.productId
+                  ? {
+                      ...d,
+                      ...detail,
+                      amount: detail.quantity * (detail.unitPrice ?? 0),
+                    }
+                  : d
+              );
+            }
+          } else {
+            // Product not changed: just update the item
+            this.orderDetails = this.orderDetails.map((d) =>
+              d.productId === item.productId
+                ? {
+                    ...d,
+                    ...detail,
+                    amount: detail.quantity * (detail.unitPrice ?? 0),
+                  }
+                : d
+            );
+          }
+        } else if (existing) {
+          // Add mode, but product already exists: increment quantity and update amount
           this.orderDetails = this.orderDetails.map((d) =>
-            d.productId === item.productId ? { ...d, ...detail } : d
+            d.productId === detail.productId
+              ? {
+                  ...d,
+                  quantity: d.quantity + detail.quantity,
+                  amount:
+                    (d.quantity + detail.quantity) *
+                    (detail.unitPrice ?? (d as any).unitPrice ?? 0),
+                  unitPrice: detail.unitPrice ?? (d as any).unitPrice,
+                }
+              : d
           );
         } else {
-          // Add new
+          // Add mode, new product: add new detail
           (detail as any).amount = detail.quantity * (detail.unitPrice ?? 0);
           this.orderDetails = [...this.orderDetails, detail];
         }

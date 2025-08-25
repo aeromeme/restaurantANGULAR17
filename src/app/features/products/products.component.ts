@@ -8,8 +8,8 @@ import { ProductEditorComponent } from './product-editor/product-editor.componen
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ProductsService } from './service/ProductsService';
 import { CategoryService } from '../../api/services/category.service';
+import { ProductsService } from '../../api/services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -38,8 +38,8 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     // Load products
-    this.productsService.getProducts().subscribe({
-    //this.productsService.apiProductsGet$Json().subscribe({
+    //this.productsService.getProducts().subscribe({
+    this.productsService.apiProductsGet$Json().subscribe({
       next: (data) => {
         this.products = data;
         this.loading = false;
@@ -71,8 +71,8 @@ export class ProductsComponent implements OnInit {
       if (result) {
         // only add if result is defined and is a new product
 
-        this.productsService.createProduct(result ).subscribe({
-        //this.productsService.apiProductsPost$Json({ body: result }).subscribe({
+        //this.productsService.createProduct(result ).subscribe({
+        this.productsService.apiProductsPost$Json({ body: result }).subscribe({
           next: (createdProduct: ProductDto) => {
             // Success: add to local list
             this.products = [...this.products, createdProduct];
@@ -98,19 +98,12 @@ export class ProductsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.id) {
         this.productsService
-          .updateProduct( result)
-          //.apiProductsIdPut({ id: result.id, body: result })
+          //.updateProduct( result)
+          .apiProductsIdPut$Json({ id: result.id, body: result })
           .subscribe({
-            next: () => {
-              // Find the selected category object (assuming you have categories loaded)
-              const updatedCategory = this.categories.find(
-                (c) => c.id === result.categoryId
-              );
-              // Update the local array with the new values and category object
+            next: (updatedProduct: ProductDto) => {
               this.products = this.products.map((p) =>
-                p.id === result.id
-                  ? { ...p, ...result, category: updatedCategory }
-                  : p
+                p.id === updatedProduct.id ? updatedProduct : p
               );
             },
             error: (err) => {
@@ -124,8 +117,8 @@ export class ProductsComponent implements OnInit {
 
   deleteProduct(product: ProductDto): void {
     if (confirm(`Delete product "${product.name}"?`)) {
-      //this.productsService.apiProductsIdDelete({ id: product.id! }).subscribe({
-        this.productsService.deleteProduct( product.id!).subscribe({
+      this.productsService.apiProductsIdDelete({ id: product.id! }).subscribe({
+      //  this.productsService.deleteProduct( product.id!).subscribe({
         next: () => {
           this.products = this.products.filter((p) => p.id !== product.id);
         },

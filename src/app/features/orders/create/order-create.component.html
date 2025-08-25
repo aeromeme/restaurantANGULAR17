@@ -1,7 +1,8 @@
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
 <mat-card>
   <mat-card-title>{{ isEditMode ? 'Update Order' : 'Create New Order' }}</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+
       <mat-form-field appearance="fill">
         <mat-label>Customer Name</mat-label>
         <input matInput formControlName="customerName" />
@@ -21,7 +22,6 @@
         <mat-label>Total Amount</mat-label>
         <input matInput type="number" formControlName="totalAmount" readonly />
       </mat-form-field>
-    </form>
   </mat-card-content>
 </mat-card>
 
@@ -88,3 +88,4 @@
     Cancel
   </button>
 </div>
+</form>

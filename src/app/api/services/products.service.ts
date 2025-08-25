@@ -25,8 +25,10 @@ import { apiProductsIdGet$Json } from '../fn/products/api-products-id-get-json';
 import { ApiProductsIdGet$Json$Params } from '../fn/products/api-products-id-get-json';
 import { apiProductsIdGet$Plain } from '../fn/products/api-products-id-get-plain';
 import { ApiProductsIdGet$Plain$Params } from '../fn/products/api-products-id-get-plain';
-import { apiProductsIdPut } from '../fn/products/api-products-id-put';
-import { ApiProductsIdPut$Params } from '../fn/products/api-products-id-put';
+import { apiProductsIdPut$Json } from '../fn/products/api-products-id-put-json';
+import { ApiProductsIdPut$Json$Params } from '../fn/products/api-products-id-put-json';
+import { apiProductsIdPut$Plain } from '../fn/products/api-products-id-put-plain';
+import { ApiProductsIdPut$Plain$Params } from '../fn/products/api-products-id-put-plain';
 import { apiProductsPost$Json } from '../fn/products/api-products-post-json';
 import { ApiProductsPost$Json$Params } from '../fn/products/api-products-post-json';
 import { apiProductsPost$Plain } from '../fn/products/api-products-post-plain';
@@ -185,23 +187,45 @@ export class ProductsService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiProductsIdPut()` instead.
+   * To access only the response body, use `apiProductsIdPut$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiProductsIdPut$Response(params: ApiProductsIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiProductsIdPut(this.http, this.rootUrl, params, context);
+  apiProductsIdPut$Plain$Response(params: ApiProductsIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductDto>> {
+    return apiProductsIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiProductsIdPut$Response()` instead.
+   * To access the full response (for headers, for example), `apiProductsIdPut$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiProductsIdPut(params: ApiProductsIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiProductsIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiProductsIdPut$Plain(params: ApiProductsIdPut$Plain$Params, context?: HttpContext): Observable<ProductDto> {
+    return this.apiProductsIdPut$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ProductDto>): ProductDto => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiProductsIdPut$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiProductsIdPut$Json$Response(params: ApiProductsIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductDto>> {
+    return apiProductsIdPut$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiProductsIdPut$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiProductsIdPut$Json(params: ApiProductsIdPut$Json$Params, context?: HttpContext): Observable<ProductDto> {
+    return this.apiProductsIdPut$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ProductDto>): ProductDto => r.body)
     );
   }
 
