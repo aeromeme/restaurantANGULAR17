@@ -6,6 +6,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { AzureBusService } from './services/azure-bus.service';
+import { CarsService } from './services/cars.service';
 import { CategoryService } from './services/category.service';
 import { OrderService } from './services/order.service';
 import { ProductsService } from './services/products.service';
@@ -18,6 +20,8 @@ import { ProductsService } from './services/products.service';
   exports: [],
   declarations: [],
   providers: [
+    AzureBusService,
+    CarsService,
     CategoryService,
     OrderService,
     ProductsService,

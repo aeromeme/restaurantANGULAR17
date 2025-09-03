@@ -10,11 +10,134 @@
     }
   ],
   "paths": {
+    "/api/AzureBus/send": {
+      "post": {
+        "tags": ["AzureBus"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AzureBus/receive": {
+      "get": {
+        "tags": ["AzureBus"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AzureBus/topic": {
+      "post": {
+        "tags": ["AzureBus"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AzureBus/receive/{subscription}": {
+      "get": {
+        "tags": ["AzureBus"],
+        "parameters": [
+          {
+            "name": "subscription",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Cars": {
+      "get": {
+        "tags": ["Cars"],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cars"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Category": {
       "get": {
-        "tags": [
-          "Category"
-        ],
+        "tags": ["Category"],
         "responses": {
           "200": {
             "description": "Success",
@@ -50,9 +173,7 @@
     },
     "/api/Category/{id}": {
       "get": {
-        "tags": [
-          "Category"
-        ],
+        "tags": ["Category"],
         "parameters": [
           {
             "name": "id",
@@ -110,9 +231,7 @@
     },
     "/api/Order": {
       "get": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "responses": {
           "200": {
             "description": "Success",
@@ -146,9 +265,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -214,9 +331,7 @@
     },
     "/api/Order/{id}": {
       "get": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "parameters": [
           {
             "name": "id",
@@ -272,9 +387,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "parameters": [
           {
             "name": "id",
@@ -369,9 +482,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "parameters": [
           {
             "name": "id",
@@ -429,9 +540,7 @@
     },
     "/api/Products": {
       "get": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "responses": {
           "200": {
             "description": "Success",
@@ -465,9 +574,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -533,9 +640,7 @@
     },
     "/api/Products/{id}": {
       "get": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "parameters": [
           {
             "name": "id",
@@ -591,9 +696,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "parameters": [
           {
             "name": "id",
@@ -688,9 +791,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "parameters": [
           {
             "name": "id",
@@ -745,59 +846,51 @@
           }
         }
       }
-    },
-    "/api/Products/category/{categoryId}": {
-      "get": {
-        "tags": [
-          "Products"
-        ],
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "CarInput": {
+        "type": "object",
+        "properties": {
+          "make": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "vin": {
+            "type": "string",
+            "nullable": true
+          },
+          "mileage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CategoryDto": {
         "type": "object",
         "properties": {
@@ -817,10 +910,7 @@
         "additionalProperties": false
       },
       "CreateOrderDetailDto": {
-        "required": [
-          "productId",
-          "quantity"
-        ],
+        "required": ["productId", "quantity"],
         "type": "object",
         "properties": {
           "productId": {
@@ -835,10 +925,7 @@
         "additionalProperties": false
       },
       "CreateOrderDto": {
-        "required": [
-          "customerName",
-          "orderDate"
-        ],
+        "required": ["customerName", "orderDate"],
         "type": "object",
         "properties": {
           "customerName": {
@@ -860,11 +947,7 @@
         "additionalProperties": false
       },
       "CreateProductDto": {
-        "required": [
-          "categoryId",
-          "name",
-          "price"
-        ],
+        "required": ["categoryId", "name", "price"],
         "type": "object",
         "properties": {
           "name": {
@@ -883,10 +966,7 @@
         "additionalProperties": false
       },
       "OrderDetailDto": {
-        "required": [
-          "productId",
-          "quantity"
-        ],
+        "required": ["productId", "quantity"],
         "type": "object",
         "properties": {
           "productId": {
@@ -921,10 +1001,7 @@
         "additionalProperties": false
       },
       "OrderDto": {
-        "required": [
-          "customerName",
-          "orderDate"
-        ],
+        "required": ["customerName", "orderDate"],
         "type": "object",
         "properties": {
           "customerName": {
@@ -978,13 +1055,10 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "ProductDto": {
-        "required": [
-          "name",
-          "price"
-        ],
+        "required": ["name", "price"],
         "type": "object",
         "properties": {
           "name": {
@@ -1003,6 +1077,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "category": {
             "$ref": "#/components/schemas/CategoryDto"
           }
@@ -1010,10 +1088,7 @@
         "additionalProperties": false
       },
       "UpdateProductDto": {
-        "required": [
-          "name",
-          "price"
-        ],
+        "required": ["name", "price"],
         "type": "object",
         "properties": {
           "name": {

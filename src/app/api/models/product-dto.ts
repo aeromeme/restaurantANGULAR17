@@ -5,6 +5,7 @@
 import { CategoryDto } from '../models/category-dto';
 export interface ProductDto {
   category?: CategoryDto;
+  categoryId?: number;
   id?: number;
   name: string;
   price: number;
