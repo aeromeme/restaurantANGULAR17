@@ -5,10 +5,11 @@ import {
   tick,
 } from '@angular/core/testing';
 import { ProductsComponent } from './products.component';
-import { ProductsService } from './service/ProductsService';
+import { ProductsService } from '../../api/services/products.service';
 import { CategoryService } from '../../api/services/category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -19,18 +20,21 @@ describe('ProductsComponent', () => {
 
   beforeEach(async () => {
     productsServiceSpy = jasmine.createSpyObj('ProductsService', [
-      'getProducts',
-      'createProduct',
-      'updateProduct',
-      'deleteProduct',
+      'apiProductsGet$Json',
+      'apiProductsPost$Json',
+      'apiProductsIdPut$Json',
+      'apiProductsIdDelete',
     ]);
     categoryServiceSpy = jasmine.createSpyObj('CategoryService', [
       'apiCategoryGet$Json',
     ]);
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
+    productsServiceSpy.apiProductsGet$Json.and.returnValue(of([]));
+    categoryServiceSpy.apiCategoryGet$Json.and.returnValue(of([]));
+
     await TestBed.configureTestingModule({
-      imports: [ProductsComponent],
+      imports: [ProductsComponent, HttpClientTestingModule],
       providers: [
         { provide: ProductsService, useValue: productsServiceSpy },
         { provide: CategoryService, useValue: categoryServiceSpy },
@@ -40,6 +44,7 @@ describe('ProductsComponent', () => {
 
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -47,22 +52,7 @@ describe('ProductsComponent', () => {
   });
 
   it('should load products and categories on init', () => {
-    const mockProducts = [
-      {
-        id: 1,
-        name: 'Test',
-        price: 10,
-        stock: 5,
-        category: { id: 1, name: 'Cat' },
-      },
-    ];
-    const mockCategories = [{ id: 1, name: 'Cat' }];
-    productsServiceSpy.getProducts.and.returnValue(of(mockProducts));
-    categoryServiceSpy.apiCategoryGet$Json.and.returnValue(of(mockCategories));
-
-    component.ngOnInit();
-
-    expect(productsServiceSpy.getProducts).toHaveBeenCalled();
+    expect(productsServiceSpy.apiProductsGet$Json).toHaveBeenCalled();
     expect(categoryServiceSpy.apiCategoryGet$Json).toHaveBeenCalled();
   });
 
@@ -71,7 +61,7 @@ describe('ProductsComponent', () => {
       afterClosed: of({ name: 'New', price: 1, stock: 1, categoryId: 1 }),
     });
     dialogSpy.open.and.returnValue(dialogRefSpyObj);
-    productsServiceSpy.createProduct.and.returnValue(
+    productsServiceSpy.apiProductsPost$Json.and.returnValue(
       of({
         id: 2,
         name: 'New',
@@ -84,11 +74,11 @@ describe('ProductsComponent', () => {
     component.products = [];
     component.openProductPopup();
 
-    expect(productsServiceSpy.createProduct).toHaveBeenCalled();
+    expect(productsServiceSpy.apiProductsPost$Json).toHaveBeenCalled();
   });
 
   it('should remove a product after successful deletion', () => {
-    productsServiceSpy.deleteProduct.and.returnValue(of(void 0));
+    productsServiceSpy.apiProductsIdDelete.and.returnValue(of(void 0));
     component.products = [
       {
         id: 1,
@@ -99,12 +89,14 @@ describe('ProductsComponent', () => {
       },
     ];
     component.deleteProduct(component.products[0]);
-    expect(productsServiceSpy.deleteProduct).toHaveBeenCalledWith(1);
+    expect(productsServiceSpy.apiProductsIdDelete).toHaveBeenCalledWith({
+      id: 1,
+    });
   });
 
   it('should handle error when deleting product', () => {
     spyOn(window, 'alert');
-    productsServiceSpy.deleteProduct.and.returnValue(
+    productsServiceSpy.apiProductsIdDelete.and.returnValue(
       throwError(() => new Error('Delete failed'))
     );
     component.products = [
