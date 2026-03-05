@@ -1,0 +1,22 @@
+<div class="product-list">
+  <h2>Products</h2>
+  <mat-spinner *ngIf="loading" diameter="50"></mat-spinner>
+  <div class="products-grid" *ngIf="!loading">
+    <mat-card *ngFor="let product of products" class="product-card">
+      <mat-card-header>
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-subtitle>{{ product.category?.name }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Price: ${{ product.price }}</p>
+        <p>Stock: {{ product.stock }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="addToCart(product)">
+          <mat-icon>add_shopping_cart</mat-icon>
+          Add to Cart
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

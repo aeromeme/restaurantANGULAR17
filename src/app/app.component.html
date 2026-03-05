@@ -1,6 +1,9 @@
 <mat-toolbar color="primary">
   <span>My Angular 17 App</span>
   <span style="flex: 1 1 auto"></span>
+  <button mat-icon-button [matBadge]="totalItems$ | async" matBadgeColor="accent">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
   <button mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/products">Products</button>
