@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { loggingInterceptor } from './core/interceptors/logging.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers } from './store';
+import { localStorageSyncReducer, reducers } from './store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       MatButtonModule,
       MatMenuModule,
       MatIconModule,
-      StoreModule.forRoot(reducers),
+      StoreModule.forRoot(reducers, { metaReducers: [localStorageSyncReducer] }),
       StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
     ),
     provideHttpClient(withInterceptors([loggingInterceptor])),

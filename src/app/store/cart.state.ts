@@ -8,7 +8,3 @@ export interface CartItem {
 export interface CartState {
   items: CartItem[];
 }
-
-export interface AppState {
-  cart: CartState;
-}
