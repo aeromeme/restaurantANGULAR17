@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { JwtStorageService } from '../services/jwt-storage.service';
 
 
 @Component({
@@ -53,11 +54,12 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private jwtStorage: JwtStorageService
   ) {}
 
   ngOnInit() {
-    if (localStorage.getItem('jwt')) {
+    if (this.jwtStorage.isAuthenticated()) {
       this.router.navigate(['/']);
     }
   }
@@ -68,7 +70,7 @@ export class LoginComponent implements OnInit {
         .apiAuthLoginPost$Json({ body: this.loginForm.value }) // Use the $Json method
         .subscribe({
           next: (res) => {
-            localStorage.setItem('jwt', res.token ?? ''); // Use res.token if response is { token: string }
+            this.jwtStorage.saveToken(res.token ?? '');
             this.router.navigate(['/']);
           },
           error: () => {

@@ -1,12 +1,15 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { JwtStorageService } from '../services/jwt-storage.service';
 
 export const authGuard: import('@angular/router').CanActivateFn = () => {
-  const token = localStorage.getItem('jwt');
-  if (token) {
+  const jwtStorage = inject(JwtStorageService);
+  const router = inject(Router);
+
+  if (jwtStorage.isAuthenticated()) {
     return true;
   } else {
-    inject(Router).navigate(['/login']);
+    router.navigate(['/login']);
     return false;
   }
 };

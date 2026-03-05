@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { JwtStorageService } from './core/services/jwt-storage.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class AppComponent {
   title = 'my-restaurant';
   product: ProductDto | undefined;
-  constructor(private productService: ProductsService, private router: Router) {
+  constructor(private productService: ProductsService, private router: Router, private jwtStorage: JwtStorageService) {
     this.productService.apiProductsIdGet$Json({ id: 1 }).subscribe({
       next: (data) => {
         this.product = data;
@@ -38,11 +39,11 @@ export class AppComponent {
   }
 
   get isLoggedIn(): boolean {
-    return !!localStorage.getItem('jwt');
+    return this.jwtStorage.isAuthenticated();
   }
 
   logout() {
-    localStorage.removeItem('jwt');
+    this.jwtStorage.removeToken();
     this.router.navigate(['/login']);
   }
 }
