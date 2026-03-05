@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ProductDto } from '../../api/models';
-import { CartItem } from '../../store/cart.state';
+import { CartItem, ProductCartItem } from '../../store/cart.state';
 import * as CartActions from '../../store/cart.actions';
 import * as CartSelectors from '../../store/cart.selectors';
 
@@ -24,7 +24,7 @@ export class CartService {
     return this.store.select(CartSelectors.selectCartTotal);
   }
 
-  addToCart(product: ProductDto): void {
+  addToCart(product: ProductCartItem): void {
     this.store.dispatch(CartActions.addToCart({ product }));
   }
 
@@ -39,4 +39,18 @@ export class CartService {
   clearCart(): void {
     this.store.dispatch(CartActions.clearCart());
   }
+  mapToCartItem(product: ProductDto): ProductCartItem {
+  return {
+    category: {
+      description: product.category?.description ?? null,
+      id: product.category?.id ?? undefined,
+      name: product.category?.name ?? null,
+    },
+    categoryId: product.categoryId ?? 0,
+    id: product.id ?? 0,
+    name: product.name,
+    price: product.price,
+    stock: product.stock,
+  };
+}
 }

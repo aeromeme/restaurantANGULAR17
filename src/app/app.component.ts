@@ -12,7 +12,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { JwtStorageService } from './core/services/jwt-storage.service';
 import { CartService } from './core/services/cart.service';
 import { Observable } from 'rxjs';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CartDialogComponent } from './features/cart-dialog/cart-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +26,14 @@ import { Observable } from 'rxjs';
     MatMenuModule,
     MatIconModule,
     MatBadgeModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
+
+
 export class AppComponent {
   title = 'my-restaurant';
   product: ProductDto | undefined;
@@ -38,6 +42,7 @@ export class AppComponent {
   cartService = inject(CartService);
   router = inject(Router);
   productService = inject(ProductsService);
+  dialog = inject(MatDialog);
 
   constructor() {
     this.productService.apiProductsIdGet$Json({ id: 1 }).subscribe({
@@ -49,6 +54,10 @@ export class AppComponent {
       },
     });
     this.totalItems$ = this.cartService.totalItems$;
+  }
+
+  openCartDialog() {
+    this.dialog.open(CartDialogComponent, { width: '400px' });
   }
 
   get isLoggedIn(): boolean {

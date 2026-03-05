@@ -16,3 +16,17 @@
 .product-card mat-card-actions {
   margin-top: auto;
 }
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.quantity {
+  min-width: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+}

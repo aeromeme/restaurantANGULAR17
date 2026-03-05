@@ -6,13 +6,15 @@ import { OrderCreateComponent } from './features/orders/create/order-create.comp
 import { authGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './core/login/login.component';
 import { ProductListComponent } from './features/product-list/product-list.component';
+import { CartComponent } from './features/cart/cart.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'product-list', pathMatch: 'full' },
-  { path: 'product-list', component: ProductListComponent },
+  { path: 'product-list', component: ProductListComponent, canActivate: [authGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [authGuard] },
   { path: 'categories', component: CategoriesComponent, canActivate: [authGuard] },
   { path: 'orders', component: OrdersListComponent, canActivate: [authGuard] },
   { path: 'orders/create', component: OrderCreateComponent, canActivate: [authGuard]}, // <-- Flat route
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
 ];

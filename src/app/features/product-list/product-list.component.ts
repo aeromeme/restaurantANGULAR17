@@ -7,7 +7,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductDto } from '../../api/models';
 import { ProductsService } from '../../api/services/products.service';
 import { CartService } from '../../core/services/cart.service';
-
+import { CartItem, ProductCartItem } from '../../store/cart.state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectCartItems } from '../../store/cart.selectors';import * as CartActions from '../../store/cart.actions';
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -24,11 +27,15 @@ import { CartService } from '../../core/services/cart.service';
 export class ProductListComponent implements OnInit {
   products: ProductDto[] = [];
   loading = true;
+  cartItems$: Observable<CartItem[]>;
 
   constructor(
     private productsService: ProductsService,
-    private cartService: CartService
-  ) {}
+    private cartService: CartService,
+    private store: Store
+  ) {
+    this.cartItems$ = this.store.select(selectCartItems);
+  }
 
   ngOnInit(): void {
     this.productsService.apiProductsGet$Json().subscribe({
@@ -44,6 +51,15 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: ProductDto): void {
-    this.cartService.addToCart(product);
+    const productCartItem = this.cartService.mapToCartItem(product);
+    this.cartService.addToCart(productCartItem);
+  }
+
+  updateQuantity(productId: number, quantity: number): void {
+    this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
+  }
+
+  removeFromCart(productId: number): void {
+    this.store.dispatch(CartActions.removeFromCart({ productId }));
   }
 }

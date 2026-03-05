@@ -7,12 +7,18 @@ import { jwtInterceptor } from './app/core/interceptors/jwt.interceptor';
 import { loggingInterceptor } from './app/core/interceptors/logging.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { isDevMode } from '@angular/core';
+import { reducers, metaReducers } from './app/store';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),provideRouter(routes), // <-- This provides ActivatedRoute and other router services
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes), // <-- This provides ActivatedRoute and other router services
     provideHttpClient(withInterceptors([jwtInterceptor, loggingInterceptor])),
     importProvidersFrom(BrowserAnimationsModule),
-    // ...other providers
+    provideStore(reducers, { metaReducers }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 }).catch((err) => console.error(err));
