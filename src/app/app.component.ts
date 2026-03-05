@@ -14,6 +14,9 @@ import { CartService } from './core/services/cart.service';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CartDialogComponent } from './features/cart-dialog/cart-dialog.component';
+import { Store } from '@ngrx/store';
+import * as CartActions from './store/cart.actions';
+import { FavoritesStore } from './store/favorites.signal-store';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +46,8 @@ export class AppComponent {
   router = inject(Router);
   productService = inject(ProductsService);
   dialog = inject(MatDialog);
-
+  store = inject(Store);
+  favoritesStore = inject(FavoritesStore);
   constructor() {
     this.productService.apiProductsIdGet$Json({ id: 1 }).subscribe({
       next: (data) => {
@@ -66,6 +70,8 @@ export class AppComponent {
 
   logout() {
     this.jwtStorage.removeToken();
+    this.store.dispatch(CartActions.clearCart());
+    this.favoritesStore.clearFavorites();
     this.router.navigate(['/login']);
   }
 }

@@ -12,6 +12,9 @@
         <p>Stock: {{ product.stock }}</p>
       </mat-card-content>
       <mat-card-actions>
+        <button mat-icon-button [class.favorite]="isFavorite(product.id!)()" (click)="toggleFavorite(product)">
+          <mat-icon>favorite</mat-icon>
+        </button>
         @if ((cartItems$ | async)?.find(item => item.product.id === product.id!)?.quantity; as qty) {
           <div class="quantity-controls">
             <button mat-icon-button (click)="updateQuantity(product.id!, qty - 1)" [disabled]="qty <= 1">

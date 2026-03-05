@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,7 @@ import { CartItem, ProductCartItem } from '../../store/cart.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectCartItems } from '../../store/cart.selectors';import * as CartActions from '../../store/cart.actions';
+import { FavoritesStore, ProductFavoriteItem } from '../../store/favorites.signal-store';
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -32,7 +33,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
-    private store: Store
+    private store: Store,
+    @Inject(FavoritesStore) private favoritesStore: any
   ) {
     this.cartItems$ = this.store.select(selectCartItems);
   }
@@ -61,5 +63,33 @@ export class ProductListComponent implements OnInit {
 
   removeFromCart(productId: number): void {
     this.store.dispatch(CartActions.removeFromCart({ productId }));
+  }
+
+  toggleFavorite(product: ProductDto): void {
+    const favoriteItem = this.mapToFavoriteItem(product);
+    if (this.favoritesStore.isFavorite(product.id!)()) {
+      this.favoritesStore.removeFromFavorites(product.id!);
+    } else {
+      this.favoritesStore.addToFavorites(favoriteItem);
+    }
+  }
+
+  isFavorite(productId: number) {
+    return this.favoritesStore.isFavorite(productId);
+  }
+
+  private mapToFavoriteItem(product: ProductDto): ProductFavoriteItem {
+    return {
+      category: {
+        description: product.category?.description,
+        id: product.category?.id,
+        name: product.category?.name
+      },
+      categoryId: product.categoryId!,
+      id: product.id!,
+      name: product.name!,
+      price: product.price!,
+      stock: product.stock
+    };
   }
 }
