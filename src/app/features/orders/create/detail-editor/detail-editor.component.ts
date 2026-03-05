@@ -15,7 +15,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { ProductsService } from '../../../products/service/ProductsService'; // Adjust path as needed
 import { OrderDetailDto, ProductDto } from '../../../../api/models';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,7 +27,6 @@ import { CreateOrderDetailDto } from '../../../../api/models/create-order-detail
   selector: 'app-detail-editor',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
@@ -35,8 +34,8 @@ import { CreateOrderDetailDto } from '../../../../api/models/create-order-detail
     MatButtonModule,
     MatDialogContent,
     MatDialogActions,
-    MatSelectModule, // <-- Add this line
-  ],
+    MatSelectModule
+],
   templateUrl: './detail-editor.component.html',
   styleUrl: './detail-editor.component.css',
 })

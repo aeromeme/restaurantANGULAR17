@@ -7,7 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,10 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     MatToolbarModule,
     MatButtonModule,
-    MatMenuModule, // <--- must import MatMenuModule
+    MatMenuModule,
     MatIconModule,
-    RouterModule,
-    CommonModule, // <-- Add this line
-  ],
+    RouterModule
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

@@ -22,22 +22,21 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { CategoryService } from '../../../api/services/category.service'; // <-- Import service
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-product-editor',
   standalone: true,
   imports: [
-    CommonModule, // <-- Add this line
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule, // <-- Add this line
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogContent,
-    MatDialogActions,
-  ],
+    MatDialogActions
+],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.css',
 })
