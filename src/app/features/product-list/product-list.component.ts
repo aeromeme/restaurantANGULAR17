@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,12 +29,12 @@ export class ProductListComponent implements OnInit {
   products: ProductDto[] = [];
   loading = true;
   cartItems$: Observable<CartItem[]>;
+  private favoritesStore= inject(FavoritesStore);
+  private store = inject(Store);
+  private cartService = inject(CartService);
+  private productsService = inject(ProductsService);
 
   constructor(
-    private productsService: ProductsService,
-    private cartService: CartService,
-    private store: Store,
-    @Inject(FavoritesStore) private favoritesStore: any
   ) {
     this.cartItems$ = this.store.select(selectCartItems);
   }

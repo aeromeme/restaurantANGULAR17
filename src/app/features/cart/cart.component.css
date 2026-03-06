@@ -70,3 +70,7 @@ mat-card {
 .cart-actions button {
   flex: 1;
 }
+
+.favorite {
+  color: red;
+}

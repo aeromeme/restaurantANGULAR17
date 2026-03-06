@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { CartItem } from '../../store/cart.state';
 import { selectCartItems, selectCartTotal } from '../../store/cart.selectors';
 import * as CartActions from '../../store/cart.actions';
+import { FavoritesStore } from '../../store/favorites.signal-store';
 
 @Component({
   selector: 'app-cart',
@@ -24,10 +25,11 @@ import * as CartActions from '../../store/cart.actions';
   styleUrl: './cart.component.css',
 })
 export class CartComponent {
+  private store = inject(Store);
+  private favoritesStore= inject(FavoritesStore);
   cartItems$: Observable<CartItem[]> = this.store.select(selectCartItems);
   cartTotal$: Observable<number> = this.store.select(selectCartTotal);
-
-  constructor(private store: Store) {}
+  
 
   updateQuantity(productId: number, quantity: number) {
     this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
@@ -39,5 +41,9 @@ export class CartComponent {
 
   clearCart() {
     this.store.dispatch(CartActions.clearCart());
+  }
+
+  isFavorite(productId: number) {
+    return this.favoritesStore.isFavorite(productId);
   }
 }
