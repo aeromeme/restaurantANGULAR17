@@ -1,1 +1,21 @@
-<p>categories works!</p>
+<div class="categories-container">
+  <h2>Categories</h2>
+
+  @if (categories.length > 0) {
+    <div class="categories-list">
+      @for (category of categories; track category.id) {
+        @if (category.name) {
+          <div class="category-card">
+            <h3>{{ category.name }}</h3>
+            @if (category.description) {
+              <p>{{ category.description }}</p>
+            }
+            <small>ID: {{ category.id }}</small>
+          </div>
+        }
+      }
+    </div>
+  } @else {
+    <p>No categories found.</p>
+  }
+</div>

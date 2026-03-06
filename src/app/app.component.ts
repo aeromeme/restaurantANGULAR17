@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -30,14 +30,12 @@ import { FavoritesStore } from './store/favorites.signal-store';
     MatIconModule,
     MatBadgeModule,
     RouterModule,
-    MatDialogModule
-],
+    MatDialogModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-
-
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'my-restaurant';
   product: ProductDto | undefined;
   totalItems$: Observable<number>;
@@ -58,6 +56,13 @@ export class AppComponent {
       },
     });
     this.totalItems$ = this.cartService.totalItems$;
+  }
+
+  ngOnInit(): void {
+    // Clear cart if user is not authenticated on app startup
+    if (!this.jwtStorage.isAuthenticated()) {
+      this.cartService.clearCart();
+    }
   }
 
   openCartDialog() {
