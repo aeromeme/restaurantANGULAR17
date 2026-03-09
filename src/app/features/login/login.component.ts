@@ -11,7 +11,6 @@ import { JwtStorageService } from '../../core/services/jwt-storage.service';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,

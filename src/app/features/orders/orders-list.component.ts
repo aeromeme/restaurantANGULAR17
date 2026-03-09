@@ -11,7 +11,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-orders-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
@@ -55,7 +54,7 @@ export class OrdersListComponent implements OnInit {
           .apiOrderIdDelete({ id: order.orderId })
           .subscribe(() => {
             this.orders = this.orders.filter(
-              (o) => o.orderId !== order.orderId
+              (o) => o.orderId !== order.orderId,
             );
           });
       } else {

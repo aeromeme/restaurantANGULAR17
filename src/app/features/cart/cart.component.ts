@@ -13,7 +13,6 @@ import { FavoritesStore } from '../../store/favorites.signal-store';
 
 @Component({
   selector: 'app-cart',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
@@ -26,10 +25,9 @@ import { FavoritesStore } from '../../store/favorites.signal-store';
 })
 export class CartComponent {
   private store = inject(Store);
-  private favoritesStore= inject(FavoritesStore);
+  private favoritesStore = inject(FavoritesStore);
   cartItems$: Observable<CartItem[]> = this.store.select(selectCartItems);
   cartTotal$: Observable<number> = this.store.select(selectCartTotal);
-  
 
   updateQuantity(productId: number, quantity: number) {
     this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));

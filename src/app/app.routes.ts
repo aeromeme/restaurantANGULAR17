@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/login/login.component';
 import { ProductListComponent } from './features/product-list/product-list.component';
 import { CartComponent } from './features/cart/cart.component';
+import { SignalsampleComponent } from './features/signalsample/signalsample.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'product-list', pathMatch: 'full' },
@@ -28,5 +29,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
   }, // <-- Flat route
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  {
+    path: 'signalsample',
+    component: SignalsampleComponent,
+    canActivate: [authGuard],
+  },
   { path: 'login', component: LoginComponent },
 ];

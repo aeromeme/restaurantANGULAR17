@@ -10,11 +10,14 @@ import { CartService } from '../../core/services/cart.service';
 import { CartItem, ProductCartItem } from '../../store/cart.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectCartItems } from '../../store/cart.selectors';import * as CartActions from '../../store/cart.actions';
-import { FavoritesStore, ProductFavoriteItem } from '../../store/favorites.signal-store';
+import { selectCartItems } from '../../store/cart.selectors';
+import * as CartActions from '../../store/cart.actions';
+import {
+  FavoritesStore,
+  ProductFavoriteItem,
+} from '../../store/favorites.signal-store';
 @Component({
   selector: 'app-product-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
@@ -29,13 +32,12 @@ export class ProductListComponent implements OnInit {
   products: ProductDto[] = [];
   loading = true;
   cartItems$: Observable<CartItem[]>;
-  private favoritesStore= inject(FavoritesStore);
+  private favoritesStore = inject(FavoritesStore);
   private store = inject(Store);
   private cartService = inject(CartService);
   private productsService = inject(ProductsService);
 
-  constructor(
-  ) {
+  constructor() {
     this.cartItems$ = this.store.select(selectCartItems);
   }
 
@@ -83,13 +85,13 @@ export class ProductListComponent implements OnInit {
       category: {
         description: product.category?.description,
         id: product.category?.id,
-        name: product.category?.name
+        name: product.category?.name,
       },
       categoryId: product.categoryId!,
       id: product.id!,
       name: product.name!,
       price: product.price!,
-      stock: product.stock
+      stock: product.stock,
     };
   }
 }

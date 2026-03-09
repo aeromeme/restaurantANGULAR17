@@ -13,7 +13,6 @@ import { ProductsService } from '../../api/services/products.service';
 
 @Component({
   selector: 'app-products',
-  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
@@ -33,7 +32,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private categoryService: CategoryService, // <-- Inject CategoryService
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -103,7 +102,7 @@ export class ProductsComponent implements OnInit {
           .subscribe({
             next: (updatedProduct: ProductDto) => {
               this.products = this.products.map((p) =>
-                p.id === updatedProduct.id ? updatedProduct : p
+                p.id === updatedProduct.id ? updatedProduct : p,
               );
             },
             error: (err) => {
@@ -118,7 +117,7 @@ export class ProductsComponent implements OnInit {
   deleteProduct(product: ProductDto): void {
     if (confirm(`Delete product "${product.name}"?`)) {
       this.productsService.apiProductsIdDelete({ id: product.id! }).subscribe({
-      //  this.productsService.deleteProduct( product.id!).subscribe({
+        //  this.productsService.deleteProduct( product.id!).subscribe({
         next: () => {
           this.products = this.products.filter((p) => p.id !== product.id);
         },

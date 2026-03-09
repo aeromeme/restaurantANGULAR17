@@ -25,7 +25,6 @@ import { CreateOrderDetailDto } from '../../../../api/models/create-order-detail
 
 @Component({
   selector: 'app-detail-editor',
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatInputModule,

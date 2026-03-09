@@ -23,10 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CategoryService } from '../../../api/services/category.service'; // <-- Import service
 import { MatSelectModule } from '@angular/material/select';
 
-
 @Component({
   selector: 'app-product-editor',
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -35,8 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogContent,
-    MatDialogActions
-],
+    MatDialogActions,
+  ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.css',
 })
@@ -51,7 +49,7 @@ export class ProductEditorComponent {
     public dialogRef: MatDialogRef<ProductEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
-    private categoryService: CategoryService // <-- Inject service
+    private categoryService: CategoryService, // <-- Inject service
   ) {
     this.productForm = this.fb.group({
       id: [null], // Add id for update

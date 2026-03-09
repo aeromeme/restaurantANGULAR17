@@ -5,7 +5,6 @@ import { CategoryDto } from '../../api/models/category-dto';
 
 @Component({
   selector: 'app-categories',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css'],

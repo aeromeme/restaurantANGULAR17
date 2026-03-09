@@ -22,7 +22,6 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-order-create',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

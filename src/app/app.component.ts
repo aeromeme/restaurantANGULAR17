@@ -20,7 +20,6 @@ import { FavoritesStore } from './store/favorites.signal-store';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
     CommonModule,

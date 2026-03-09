@@ -1,0 +1,78 @@
+.task-card {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.add-task-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.task-input {
+  flex: 1;
+}
+
+.task-list {
+  margin-bottom: 20px;
+}
+
+.task-item {
+  min-height: 80px; /* Increase minimum height for better display */
+  padding: 16px 0; /* Add more padding */
+}
+
+.task-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align to top to prevent cramped look */
+  width: 100%;
+  gap: 10px; /* Add gap between text and actions */
+}
+
+.task-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between title and chip */
+  flex: 1;
+}
+
+.task-text span {
+  font-weight: 500;
+  line-height: 1.4; /* Improve line height for readability */
+}
+
+.task-text span.done {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.task-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center; /* Center buttons vertically */
+}
+
+.summary {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .add-task-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-actions {
+    align-self: flex-end;
+  }
+}

@@ -11,13 +11,7 @@ import * as CartActions from '../../store/cart.actions';
 
 @Component({
   selector: 'app-cart-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
   templateUrl: './cart-dialog.component.html',
   styleUrl: './cart-dialog.component.css',
 })
