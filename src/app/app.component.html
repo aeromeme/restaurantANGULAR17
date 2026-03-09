@@ -1,10 +1,14 @@
 <mat-toolbar color="primary">
   <span>My Angular 17 App</span>
   <span style="flex: 1 1 auto"></span>
-  <button mat-icon-button [matBadge]="totalItems$ | async" matBadgeColor="accent" (click)="openCartDialog()">
-    <mat-icon>shopping_cart</mat-icon>
-  </button>
-  <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+  @if (isLoggedIn) {
+    <button mat-icon-button [matBadge]="totalItems$ | async" matBadgeColor="accent" (click)="openCartDialog()">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+  } @else {
+    <button mat-button routerLink="/login">Login</button>
+  }
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/products">Products</button>
     <button mat-menu-item routerLink="/orders">Orders</button>

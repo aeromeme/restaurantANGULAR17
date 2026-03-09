@@ -1,0 +1,16 @@
+.login-card {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.error-message {
+  margin-top: 1rem;
+  text-align: center;
+}

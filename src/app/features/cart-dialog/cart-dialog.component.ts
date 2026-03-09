@@ -12,7 +12,12 @@ import * as CartActions from '../../store/cart.actions';
 @Component({
   selector: 'app-cart-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './cart-dialog.component.html',
   styleUrl: './cart-dialog.component.css',
 })
@@ -22,7 +27,7 @@ export class CartDialogComponent {
 
   constructor(
     private store: Store,
-    public dialogRef: MatDialogRef<CartDialogComponent>
+    public dialogRef: MatDialogRef<CartDialogComponent>,
   ) {}
 
   updateQuantity(productId: number, quantity: number) {
