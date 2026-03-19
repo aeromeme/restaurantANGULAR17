@@ -1,0 +1,29 @@
+<mat-card>
+	<form (ngSubmit)="onSubmit()">
+		<h2>Fan Registration</h2>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Name</mat-label>
+			<input matInput type="text" [formField]="fanForm.name"/>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Email</mat-label>
+			<input matInput type="email" [formField]="fanForm.email"/>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label>Years as Fan</mat-label>
+			<input matInput type="number" [formField]="fanForm.yearsAsFan"/>
+		</mat-form-field>
+
+		<div>
+			<button mat-raised-button color="primary" type="submit" [disabled]="fanForm().invalid()">
+				Register
+			</button>
+		</div>
+	</form>
+
+	<p *ngIf="successMessage" style="color:green">{{ successMessage }}</p>
+	<p *ngIf="errorMessage" style="color:red">{{ errorMessage }}</p>
+</mat-card>

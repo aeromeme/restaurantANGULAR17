@@ -7,15 +7,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Fan } from '../../models/fan';
 
-export interface ApiOrderIdDelete$Params {
-  id: number;
+export interface ApiFanPut$Params {
+      body?: Fan
 }
 
-export function apiOrderIdDelete(http: HttpClient, rootUrl: string, params: ApiOrderIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, apiOrderIdDelete.PATH, 'delete');
+export function apiFanPut(http: HttpClient, rootUrl: string, params?: ApiFanPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, apiFanPut.PATH, 'put');
   if (params) {
-    rb.path('id', params.id, {});
+    rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
@@ -28,4 +29,4 @@ export function apiOrderIdDelete(http: HttpClient, rootUrl: string, params: ApiO
   );
 }
 
-apiOrderIdDelete.PATH = '/api/Order/{id}';
+apiFanPut.PATH = '/api/Fan';

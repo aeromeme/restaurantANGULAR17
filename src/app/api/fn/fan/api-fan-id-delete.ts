@@ -8,12 +8,12 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface ApiOrderIdDelete$Params {
+export interface ApiFanIdDelete$Params {
   id: number;
 }
 
-export function apiOrderIdDelete(http: HttpClient, rootUrl: string, params: ApiOrderIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, apiOrderIdDelete.PATH, 'delete');
+export function apiFanIdDelete(http: HttpClient, rootUrl: string, params: ApiFanIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, apiFanIdDelete.PATH, 'delete');
   if (params) {
     rb.path('id', params.id, {});
   }
@@ -28,4 +28,4 @@ export function apiOrderIdDelete(http: HttpClient, rootUrl: string, params: ApiO
   );
 }
 
-apiOrderIdDelete.PATH = '/api/Order/{id}';
+apiFanIdDelete.PATH = '/api/Fan/{id}';

@@ -7,18 +7,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ProductDto } from '../../models/product-dto';
-import { UpdateProductDto } from '../../models/update-product-dto';
+import { CreateFanDto } from '../../models/create-fan-dto';
 
-export interface ApiProductsIdPut$Plain$Params {
-  id: number;
-      body?: UpdateProductDto
+export interface ApiFanPost$Plain$Params {
+      body?: CreateFanDto
 }
 
-export function apiProductsIdPut$Plain(http: HttpClient, rootUrl: string, params: ApiProductsIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ProductDto>> {
-  const rb = new RequestBuilder(rootUrl, apiProductsIdPut$Plain.PATH, 'put');
+export function apiFanPost$Plain(http: HttpClient, rootUrl: string, params?: ApiFanPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  const rb = new RequestBuilder(rootUrl, apiFanPost$Plain.PATH, 'post');
   if (params) {
-    rb.path('id', params.id, {});
     rb.body(params.body, 'application/*+json');
   }
 
@@ -27,9 +24,9 @@ export function apiProductsIdPut$Plain(http: HttpClient, rootUrl: string, params
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ProductDto>;
+      return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
     })
   );
 }
 
-apiProductsIdPut$Plain.PATH = '/api/Products/{id}';
+apiFanPost$Plain.PATH = '/api/Fan';

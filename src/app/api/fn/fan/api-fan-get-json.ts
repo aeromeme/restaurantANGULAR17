@@ -7,25 +7,24 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Fan } from '../../models/fan';
 
-export interface ApiOrderIdDelete$Params {
-  id: number;
+export interface ApiFanGet$Json$Params {
 }
 
-export function apiOrderIdDelete(http: HttpClient, rootUrl: string, params: ApiOrderIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, apiOrderIdDelete.PATH, 'delete');
+export function apiFanGet$Json(http: HttpClient, rootUrl: string, params?: ApiFanGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Fan>>> {
+  const rb = new RequestBuilder(rootUrl, apiFanGet$Json.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'text/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<Array<Fan>>;
     })
   );
 }
 
-apiOrderIdDelete.PATH = '/api/Order/{id}';
+apiFanGet$Json.PATH = '/api/Fan';

@@ -8,6 +8,7 @@ import { LoginComponent } from './features/login/login.component';
 import { ProductListComponent } from './features/product-list/product-list.component';
 import { CartComponent } from './features/cart/cart.component';
 import { SignalsampleComponent } from './features/signalsample/signalsample.component';
+import { FanRegistrationComponent } from './features/fan-registration/fan-registration.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'product-list', pathMatch: 'full' },
@@ -32,6 +33,11 @@ export const routes: Routes = [
   {
     path: 'signalsample',
     component: SignalsampleComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'fan-registration',
+    component: FanRegistrationComponent,
     canActivate: [authGuard],
   },
   { path: 'login', component: LoginComponent },

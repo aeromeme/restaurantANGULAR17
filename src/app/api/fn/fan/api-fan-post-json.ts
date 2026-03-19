@@ -7,14 +7,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CategoryDto } from '../../models/category-dto';
+import { CreateFanDto } from '../../models/create-fan-dto';
 
-export interface ApiCategoryGet$Json$Params {
+export interface ApiFanPost$Json$Params {
+      body?: CreateFanDto
 }
 
-export function apiCategoryGet$Json(http: HttpClient, rootUrl: string, params?: ApiCategoryGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CategoryDto>>> {
-  const rb = new RequestBuilder(rootUrl, apiCategoryGet$Json.PATH, 'get');
+export function apiFanPost$Json(http: HttpClient, rootUrl: string, params?: ApiFanPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  const rb = new RequestBuilder(rootUrl, apiFanPost$Json.PATH, 'post');
   if (params) {
+    rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
@@ -22,9 +24,9 @@ export function apiCategoryGet$Json(http: HttpClient, rootUrl: string, params?: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<CategoryDto>>;
+      return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
     })
   );
 }
 
-apiCategoryGet$Json.PATH = '/api/Category';
+apiFanPost$Json.PATH = '/api/Fan';

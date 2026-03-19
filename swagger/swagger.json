@@ -1,3 +1,4 @@
+
 {
   "openapi": "3.0.1",
   "info": {
@@ -12,7 +13,9 @@
   "paths": {
     "/api/Auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -78,7 +81,9 @@
     },
     "/api/AzureBus/send": {
       "post": {
-        "tags": ["AzureBus"],
+        "tags": [
+          "AzureBus"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -107,7 +112,9 @@
     },
     "/api/AzureBus/receive": {
       "get": {
-        "tags": ["AzureBus"],
+        "tags": [
+          "AzureBus"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -117,7 +124,9 @@
     },
     "/api/AzureBus/topic": {
       "post": {
-        "tags": ["AzureBus"],
+        "tags": [
+          "AzureBus"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -146,7 +155,9 @@
     },
     "/api/AzureBus/receive/{subscription}": {
       "get": {
-        "tags": ["AzureBus"],
+        "tags": [
+          "AzureBus"
+        ],
         "parameters": [
           {
             "name": "subscription",
@@ -166,7 +177,9 @@
     },
     "/api/Cars": {
       "get": {
-        "tags": ["Cars"],
+        "tags": [
+          "Cars"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -174,7 +187,9 @@
         }
       },
       "post": {
-        "tags": ["Cars"],
+        "tags": [
+          "Cars"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -203,7 +218,9 @@
     },
     "/api/Category": {
       "get": {
-        "tags": ["Category"],
+        "tags": [
+          "Category"
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -239,7 +256,9 @@
     },
     "/api/Category/{id}": {
       "get": {
-        "tags": ["Category"],
+        "tags": [
+          "Category"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -295,9 +314,288 @@
         }
       }
     },
+    "/api/Fan": {
+      "get": {
+        "tags": [
+          "Fan"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fan"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fan"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fan"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Fan"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFanDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFanDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Fan"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Fan"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Fan"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Fan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Fan/{id}": {
+      "get": {
+        "tags": [
+          "Fan"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fan"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fan"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fan"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Fan"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/KafkaConsumer/consume": {
       "get": {
-        "tags": ["KafkaConsumer"],
+        "tags": [
+          "KafkaConsumer"
+        ],
         "parameters": [
           {
             "name": "topic",
@@ -316,7 +614,9 @@
     },
     "/api/Order": {
       "get": {
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -350,7 +650,9 @@
         }
       },
       "post": {
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -416,7 +718,9 @@
     },
     "/api/Order/{id}": {
       "get": {
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -472,7 +776,9 @@
         }
       },
       "put": {
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -567,7 +873,9 @@
         }
       },
       "delete": {
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -625,7 +933,9 @@
     },
     "/api/Products": {
       "get": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -659,7 +969,9 @@
         }
       },
       "post": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -725,7 +1037,9 @@
     },
     "/api/Products/{id}": {
       "get": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -781,7 +1095,9 @@
         }
       },
       "put": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -876,7 +1192,9 @@
         }
       },
       "delete": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -994,8 +1312,34 @@
         },
         "additionalProperties": false
       },
+      "CreateFanDto": {
+        "required": [
+          "email",
+          "name",
+          "yearsAsFan"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "yearsAsFan": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateOrderDetailDto": {
-        "required": ["productId", "quantity"],
+        "required": [
+          "productId",
+          "quantity"
+        ],
         "type": "object",
         "properties": {
           "productId": {
@@ -1010,7 +1354,10 @@
         "additionalProperties": false
       },
       "CreateOrderDto": {
-        "required": ["customerName", "orderDate"],
+        "required": [
+          "customerName",
+          "orderDate"
+        ],
         "type": "object",
         "properties": {
           "customerName": {
@@ -1032,7 +1379,11 @@
         "additionalProperties": false
       },
       "CreateProductDto": {
-        "required": ["categoryId", "name", "price"],
+        "required": [
+          "categoryId",
+          "name",
+          "price"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -1044,6 +1395,28 @@
             "format": "double"
           },
           "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Fan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "yearsAsFan": {
             "type": "integer",
             "format": "int32"
           }
@@ -1065,7 +1438,10 @@
         "additionalProperties": false
       },
       "OrderDetailDto": {
-        "required": ["productId", "quantity"],
+        "required": [
+          "productId",
+          "quantity"
+        ],
         "type": "object",
         "properties": {
           "productId": {
@@ -1100,7 +1476,10 @@
         "additionalProperties": false
       },
       "OrderDto": {
-        "required": ["customerName", "orderDate"],
+        "required": [
+          "customerName",
+          "orderDate"
+        ],
         "type": "object",
         "properties": {
           "customerName": {
@@ -1154,10 +1533,13 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "ProductDto": {
-        "required": ["name", "price"],
+        "required": [
+          "name",
+          "price"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -1197,7 +1579,10 @@
         "additionalProperties": false
       },
       "UpdateProductDto": {
-        "required": ["name", "price"],
+        "required": [
+          "name",
+          "price"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -1230,7 +1615,7 @@
   },
   "security": [
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }
