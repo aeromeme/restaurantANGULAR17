@@ -24,4 +24,10 @@ export function provideApiConfiguration(rootUrl: string) {
 export class ApiConfiguration {
   rootUrl: string = 'http://localhost:5072';
 }
+/**
+ * Parameters for `ApiModule.forRoot()`
+ */
+export interface ApiConfigurationParams {
+  rootUrl?: string;
+}
 

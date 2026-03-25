@@ -10,6 +10,10 @@ import { CartItem } from '../../store/cart.state';
 import { selectCartItems, selectCartTotal } from '../../store/cart.selectors';
 import * as CartActions from '../../store/cart.actions';
 import { FavoritesStore } from '../../store/favorites.signal-store';
+import pdfMake from 'pdfmake/build/pdfmake';
+import  pdfFonts from 'pdfmake/build/vfs_fonts';
+import htmlToPdfmake from 'html-to-pdfmake';
+
 
 @Component({
   selector: 'app-cart',
@@ -29,6 +33,10 @@ export class CartComponent {
   cartItems$: Observable<CartItem[]> = this.store.select(selectCartItems);
   cartTotal$: Observable<number> = this.store.select(selectCartTotal);
 
+  constructor() {
+    pdfMake.addVirtualFileSystem(pdfFonts);
+  }
+
   updateQuantity(productId: number, quantity: number) {
     this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
   }
@@ -43,5 +51,26 @@ export class CartComponent {
 
   isFavorite(productId: number) {
     return this.favoritesStore.isFavorite(productId);
+  }
+
+  exportCartToPDF() {
+    this.exportHtmlToPdf('cart', 'cart.pdf');
+  }
+
+   exportHtmlToPdf(elementId: string, fileName: string = 'export.pdf') {
+    const element = document.getElementById(elementId);
+    if (!element) {
+      console.error('Element not found');
+      return;
+    }
+
+    const htmlContent = element.innerHTML;
+    const pdfContent = htmlToPdfmake(htmlContent);  // Convert HTML to pdfmake format
+
+    const docDefinition = {
+      content: pdfContent
+    };
+
+    pdfMake.createPdf(docDefinition).download(fileName);
   }
 }

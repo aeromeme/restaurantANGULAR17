@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductDto, CategoryDto } from '../../api/models';
-
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
@@ -127,5 +128,57 @@ export class ProductsComponent implements OnInit {
         },
       });
     }
+  }
+  exportToExcel() {
+    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.products);
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // const excelBuffer: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    // const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    // saveAs(blob, 'table-data.xlsx');
+    const table = document.getElementById('productsTable') as HTMLTableElement;
+    if (!table) {
+      console.error('Table not found');
+      return;
+    }
+
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+
+     // Find column index by header (case-sensitive)
+      const excludeHeader = 'Actions';  // Change to your header text
+      const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+      let excludeColIndex = -1;
+      for (let col = range.s.c; col <= range.e.c; ++col) {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col });  // Row 0 is headers
+        const cell = ws[cellAddress];
+        if (cell && cell.v === excludeHeader) {
+          excludeColIndex = col;
+          break;
+        }
+      }
+
+      if (excludeColIndex !== -1) {
+        // Exclude the found column
+        for (let row = range.s.r; row <= range.e.r; ++row) {
+          const cellAddress = XLSX.utils.encode_cell({ r: row, c: excludeColIndex });
+          delete ws[cellAddress];
+        }
+        if (range.e.c >= excludeColIndex) {
+          range.e.c--;
+        }
+        ws['!ref'] = XLSX.utils.encode_range(range);
+      }
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Products');
+    const excelBuffer: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products.xlsx';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 }
